@@ -18,8 +18,8 @@ export class PersonController {
   }
 
   @Get('/map')
-  async mapaccoints(@Body()mapDto : MapDto) {
-    return await this.personService.mapaccoints(mapDto);
+  async mapaccoints() {
+    return await this.personService.mapaccoints();
   
   }
 }

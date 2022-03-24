@@ -5,10 +5,14 @@ import { Model } from 'mongoose';
 import { SignUpDto } from "./dto/signup.dto";
 import { count } from "console";
 import { MapDto } from "./dto/map.dto";
+import { NotificationDocument } from "src/notification/notification.schema";
+import { Notification } from "src/notification/notification.schema";
+import e from "express";
 @Injectable()
 export class PersonService{
     constructor(
         @InjectModel(Person.name) private personModel: Model<PersonDocument>,
+        @InjectModel (Notification.name) private notificationModel: Model<NotificationDocument>,
       ) {}
 
       async signUp(signUpDto: SignUpDto): Promise<void> {
@@ -41,43 +45,28 @@ export class PersonService{
         
       }
 
+async mapaccoints() {
+  
+  const users = await this.personModel.find()
+  let map = await Promise.all(
+    users.map(async (e) => { return {
+      name : e.name ,
+      nb :  (await (this.notificationModel.find({person:e}))).length
+    }
 
-
-      //async mapaccoints(mapDto : MapDto) {
-        //const{person_id} = mapDto
-        /*const map = await this.personModel
-      .findById(
-        person_id, {
-        $map: { input: "$notif" ,
-        as : "personNotif"
-        }
-      })
-      .exec();*/
-      
-      
-
-
-   // console.log(map)
-   /*async mapaccoints(mapDto : MapDto) {
-
-    const result = await this.personModel.find()
-    .transform((docs: any) => {
-      return docs;
-    })
-    .exec();
-    console.log(result) ;
-}*/
-
-async mapaccoints(mapDto : MapDto) {
-
-  const persons = await this.personModel.find().exec();
-  persons.map
-  const aggregat =this.personModel.aggregate([
-    {$match:{'name': {$in: ['wissem']}}},
-   
-  ])
-  console.log(aggregat)
-  return aggregat ;
+     })
+  );
+  return (map)
 }
 }
-      
+
+
+
+
+
+
+
+
+
+
+
